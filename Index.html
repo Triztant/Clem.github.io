@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLEMENTINA</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            height: 100vh;
+            overflow: hidden;
+            background-color: #ffff;
+        }
+
+        /* Heading style */
+        h1 {
+            font-family: Helvetica, sans-serif;
+            margin: 10px;
+            text-align: left;
+            font-size: 50px;
+            color: #0049a2;
+            font-weight: bold;
+        }
+
+        /* Calendar container styling */
+        #calendar-container {
+            width: 100%;
+            height: 80vh; /* Reduced height to allow vertical centering */
+            overflow-x: auto;
+            overflow-y: hidden; /* Prevent vertical scrolling */
+            white-space: nowrap;
+            padding: 20px 0;
+            scroll-behavior: smooth; /* For smooth scrolling */
+        }
+
+        /* Calendar grid styling */
+        #calendar {
+            display: inline-flex;
+            gap: 100px; /* Space between months, adjust as needed */
+            height: 100%; /* Full height of container */
+            align-items: center; /* Center months vertically */
+        }
+
+        /* Month styling */
+        .month {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .month-header {
+            color: #0049a2;
+            text-align: center;
+            font-weight: italic;
+            margin-bottom: 20px;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        /* Style each square (day) */
+        .day-square {
+            width: 80px;
+            height: 80px;
+            background-color: #ffffff;
+            border: 0px solid #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #0049a2;
+            cursor: pointer;
+            position: relative;
+            transition: border 0.3s ease;
+        }
+
+        .day-square:hover {
+            border-color: #1d83ff;
+        }
+
+        /* Empty space before January */
+        #empty-space {
+            display: inline-block;
+            width: 50vw; /* Half the viewport width */
+        }
+
+        /* Album modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Album selection grid */
+        #albumSelection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .album-option {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .album-option:hover {
+            border-color: #1d83ff;
+        }
+
+        /* Close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Album cover overlay */
+        .album-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>CLEMENTINA'S MUSIC CALENDAR</h1>
+
+    <!-- Calendar Container -->
+    <div id="calendar-container">
+        <div id="calendar">
+            <!-- Empty space before January -->
+            <div id="empty-space"></div>
+        </div>
+    </div>
+
+    <!-- Popup Modal for Album Selection -->
+    <div id="albumModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2></h2>
+            <div id="albumSelection">
+                <img src="album_covers/album1.jpg" class="album-option" alt="Album 1" data-album="album_covers/album1.jpg">
+                <img src="album_covers/album2.jpg" class="album-option" alt="Album 2" data-album="album_covers/album2.jpg">
+                <img src="album_covers/album3.jpg" class="album-option" alt="Album 3" data-album="album_covers/album3.jpg">
+                <img src="album_covers/album4.jpg" class="album-option" alt="Album 4" data-album="album_covers/album4.jpg">
+                <img src="album_covers/album5.jpg" class="album-option" alt="Album 5" data-album="album_covers/album5.jpg">
+                <img src="album_covers/album6.jpg" class="album-option" alt="Album 6" data-album="album_covers/album6.jpg">
+            
+                <img src="album_covers/album7.jpg" class="album-option" alt="Album 7" data-album="album_covers/album7.jpg">
+                <img src="album_covers/album8.jpg" class="album-option" alt="Album 8" data-album="album_covers/album8.jpg">
+                <img src="album_covers/album9.jpg" class="album-option" alt="Album 9" data-album="album_covers/album9.jpg">
+                <img src="album_covers/album10.jpg" class="album-option" alt="Album 10" data-album="album_covers/album10.jpg">
+                <img src="album_covers/album11.jpg" class="album-option" alt="Album 11" data-album="album_covers/album11.jpg">
+                <img src="album_covers/album12.jpg" class="album-option" alt="Album 12" data-album="album_covers/album12.jpg">
+                <img src="album_covers/album13.jpg" class="album-option" alt="Album 13" data-album="album_covers/album13.jpg">
+                <img src="album_covers/album14.jpg" class="album-option" alt="Album 14" data-album="album_covers/album14.jpg">
+                <img src="album_covers/album15.jpg" class="album-option" alt="Album 15" data-album="album_covers/album15.jpg">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("albumModal");
+        const closeBtn = document.querySelector(".close");
+        let currentSquare = null;
+
+        const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+                            "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+        const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        function createCalendar() {
+            const calendar = document.getElementById("calendar");
+            let dayCount = 1;
+
+            for (let month = 0; month < 12; month++) {
+                const monthDiv = document.createElement("div");
+                monthDiv.classList.add("month");
+
+                const monthHeader = document.createElement("div");
+                monthHeader.classList.add("month-header");
+                monthHeader.textContent = monthNames[month];
+                monthDiv.appendChild(monthHeader);
+
+                const monthGrid = document.createElement("div");
+                monthGrid.classList.add("month-grid");
+
+                for (let day = 1; day <= daysInMonth[month]; day++) {
+                    const daySquare = document.createElement("div");
+                    daySquare.classList.add("day-square");
+                    daySquare.textContent = day;
+
+                    const albumCover = document.createElement("div");
+                    albumCover.classList.add("album-cover");
+
+                    const savedAlbum = localStorage.getItem(`day-${dayCount}`);
+                    if (savedAlbum) {
+                        albumCover.style.backgroundImage = `url(${savedAlbum})`;
+                        albumCover.style.display = "block";
+                    }
+
+                    daySquare.appendChild(albumCover);
+
+                    daySquare.addEventListener("click", function() {
+                        modal.style.display = "flex";
+                        currentSquare = daySquare;
+                        currentSquare.setAttribute('data-day', dayCount);
+                    });
+
+                    monthGrid.appendChild(daySquare);
+                    dayCount++;
+                }
+
+                monthDiv.appendChild(monthGrid);
+                calendar.appendChild(monthDiv);
+            }
+
+            // Center January after the calendar is created
+            centerJanuary();
+        }
+
+        function centerJanuary() {
+            const container = document.getElementById("calendar-container");
+            const january = document.querySelector(".month"); // First month is January
+            const containerWidth = container.offsetWidth;
+            const januaryWidth = january.offsetWidth;
+            
+            // Calculate the scroll position to center January
+            const scrollPosition = january.offsetLeft - (containerWidth / 2) + (januaryWidth / 2);
+            
+            // Set the scroll position
+            container.scrollLeft = scrollPosition;
+        }
+
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        document.querySelectorAll(".album-option").forEach(function(album) {
+            album.addEventListener("click", function() {
+                const albumSrc = this.getAttribute("data-album");
+                const dayNumber = currentSquare.getAttribute('data-day');
+
+                const albumCover = currentSquare.querySelector(".album-cover");
+                albumCover.style.backgroundImage = `url(${albumSrc})`;
+                albumCover.style.display = "block";
+                modal.style.display = "none";
+
+                localStorage.setItem(`day-${dayNumber}`, albumSrc);
+            });
+        });
+
+        createCalendar();
+
+        // Recenter January when the window is resized
+        window.addEventListener('resize', centerJanuary);
+    </script>
+</body>
+</html>
