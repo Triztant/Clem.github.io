@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Asul:wght@400;700&family=Baskervville:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: baskervville, sans-serif;
+      text-align: center;
+    }
+    #container {
+      max-width: 600px;
+      padding: 20px;
+    }
+    h1 {
+      font-style: italic;
+    }
+    #readBtn {
+      margin-top: 40px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-family: 'Baskervville', serif;
+      border: none;
+      border-radius: 25px;
+      background-color: #1a1a1a;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #readBtn:hover {
+      background-color: #333;
+    }
+    .reference {
+      color: blue;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Abstract</h1>
+    <p>This Independent Research Project explores the strategic methods that companies and creators employ to exploit or comply with social media algorithms to maximise engagement.</p>
+    <p>Through a multi-method approach including academic research, case studies, and interviews, this paper explores the dual-edged nature of algorithms from extended global reach to unpredictability. It highlights the homogenisation of content as creators adapt to algorithmic demands, often at the expense of creative diversity and mental well-being, coined as ‘algorithmic anxiety <span class="reference">[Bishop, 2019]</span>.’ Case studies such as the Greggs x Primark collaboration <span class="reference">[Marketing Week, 2022]</span> illustrate the use of post-irony, absurdity, and shareability to create viral success.</p>
+    <p>Spotify Wrapped <span class="reference">[Spotify, 2023]</span> showcases the strategies that are designed to optimise marketing campaigns for social media algorithms. They capitalise on algorithmic preferences, such as user-generated content, vibrant colours, shareability and Collective cultural moments.</p>
+    <p>This raises questions about the ethical implications of prioritising algorithmic trends over human-centred design. Etsy <span class="reference">[Etsy Annual Report, 2022]</span> demonstrates an alternative model that fosters individuality over conformity.</p>
+    <p>This research emphasises the tension between innovation and conformity in the algorithm-driven creative <span class="reference">[Noble, 2018]</span>, advocating for a more balanced approach to algorithms where designing for humans is considered and creators aren’t driven to tactics and strategy for engagement.</p>
+    <button id="readBtn">Read Full Dissertation</button>
+  </div>
+
+  <script>
+    let clickCount = 0;
+    let mouseMoves = 0;
+    let scrolls = 0;
+    let startTime = Date.now();
+
+    document.addEventListener('click', () => clickCount++);
+    document.addEventListener('mousemove', () => mouseMoves++);
+    document.addEventListener('scroll', () => scrolls++);
+
+    function calculateScore() {
+      const elapsed = (Date.now() - startTime) / 1000; // in seconds
+      let score = 100;
+
+      if (elapsed < 50) {
+        score -= (50 - elapsed) * 1.5;
+      } else if (elapsed > 60) {
+        score -= (elapsed - 60) * 1.5;
+      }
+
+      score -= clickCount * 2;
+      score -= mouseMoves * 0.01;
+      score -= scrolls * 1.5;
+
+      return Math.max(0, Math.min(100, Math.round(score)));
+    }
+
+    document.getElementById('readBtn').addEventListener('click', () => {
+      const score = calculateScore();
+      localStorage.setItem('userScore', score);
+      window.location.href = 'dissertation.html';
+    });
+
+    window.addEventListener('beforeunload', () => {
+      const score = calculateScore();
+      console.log('Session Score:', score);
+      console.log('Time Spent:', (Date.now() - startTime) / 1000, 'seconds');
+      console.log('Clicks:', clickCount);
+      console.log('Mouse Moves:', mouseMoves);
+      console.log('Scrolls:', scrolls);
+    });
+  </script>
+</body>
+</html>
